@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './interfaces/users';
 //  هذا هو المسؤول عن جلب البيانات ويعطيها للcontroller و هذا الأخير يرسلها الى المستخدم
-@Injectable()
+@Injectable()// عبارة عن design pattern 
 export class UsersService {
   private users: User[] = [
     {
