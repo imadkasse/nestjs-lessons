@@ -1,168 +1,99 @@
-# فهم Dependency Injection في Node.js و NestJS
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
-## **ما هو Dependency Injection (DI)؟**
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-**Dependency Injection (DI)** هو نمط تصميم (Design Pattern) يُستخدم لإدارة الاعتمادات (Dependencies) داخل التطبيقات. بدلًا من أن تقوم المكونات (Components) بإنشاء الاعتمادات التي تحتاجها بشكل مباشر، يتم توفير هذه الاعتمادات من مصدر خارجي (حقنها).
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-هذا الأسلوب يزيد من قابلية الصيانة والاختبار وفصل المسؤوليات بين أجزاء التطبيق.
+## Description
 
----
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## **فوائد استخدام Dependency Injection**
+## Project setup
 
-1. **القابلية للتوسّع**: يمكن استبدال أو تعديل الاعتمادات بسهولة دون التأثير على الكود المرتبط بها.
-2. **سهولة الاختبار**: يمكن توفير اعتمادات وهمية (Mocks) لاختبار المكونات بشكل مستقل.
-3. **فصل المسؤوليات**: يقلل من الترابط المباشر بين المكونات، مما يسهل تطويرها بشكل منفصل.
-4. **إعادة الاستخدام**: يمكن إعادة استخدام الاعتمادات عبر عدة مكونات.
-
----
-
-## **كيف يعمل Dependency Injection؟**
-
-### **الخطوات الأساسية:**
-
-1. **تعريف الاعتمادات**: تحديد الموارد أو الخدمات التي يحتاجها الكائن.
-2. **تسجيل الاعتمادات**: جعل هذه الاعتمادات متاحة باستخدام نظام وحدات (Modules) أو حاوية (Container).
-3. **حقن الاعتمادات**: توفير الاعتمادات باستخدام المُنشئ (Constructor) أو المُدخلات (Setters).
-
----
-
-## **مثال على DI في Node.js**
-
-### **بدون DI:**
-
-```javascript
-class UserService {
-  getUsers() {
-    return ['User1', 'User2', 'User3'];
-  }
-}
-
-class UserController {
-  constructor() {
-    this.userService = new UserService(); // ترابط مباشر
-  }
-
-  getAllUsers() {
-    return this.userService.getUsers();
-  }
-}
-
-const controller = new UserController();
-console.log(controller.getAllUsers());
+```bash
+$ npm install
 ```
 
-### **مع DI:**
+## Compile and run the project
 
-```javascript
-class UserService {
-  getUsers() {
-    return ['User1', 'User2', 'User3'];
-  }
-}
+```bash
+# development
+$ npm run start
 
-class UserController {
-  constructor(userService) {
-    this.userService = userService; // الاعتماد يتم حقنه
-  }
+# watch mode
+$ npm run start:dev
 
-  getAllUsers() {
-    return this.userService.getUsers();
-  }
-}
-
-// حقن الاعتماد
-const userService = new UserService();
-const controller = new UserController(userService);
-console.log(controller.getAllUsers());
+# production mode
+$ npm run start:prod
 ```
 
----
+## Run tests
 
-## **Dependency Injection في NestJS**
+```bash
+# unit tests
+$ npm run test
 
-يوفر NestJS نظام DI مدمج يعتمد على مبدأ **Inversion of Control (IoC)**. يتم ذلك باستخدام ديكوراتورات مثل `@Injectable` و `@Inject`.
+# e2e tests
+$ npm run test:e2e
 
----
-
-### **مثال عملي على DI في NestJS**
-
-#### **تعريف خدمة:**
-
-```typescript
-import { Injectable } from '@nestjs/common';
-
-@Injectable()
-export class UserService {
-  getUsers() {
-    return ['User1', 'User2', 'User3'];
-  }
-}
+# test coverage
+$ npm run test:cov
 ```
 
-#### **استخدام الخدمة في وحدة تحكم (Controller):**
+## Deployment
 
-```typescript
-import { Controller, Get } from '@nestjs/common';
-import { UserService } from './user.service';
+When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
 
-@Controller('users')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
-  @Get()
-  findAll() {
-    return this.userService.getUsers();
-  }
-}
+```bash
+$ npm install -g mau
+$ mau deploy
 ```
 
-#### **تسجيل الاعتمادات في الوحدة (Module):**
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
-```typescript
-import { Module } from '@nestjs/common';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+## Resources
 
-@Module({
-  controllers: [UserController],
-  providers: [UserService],
-})
-export class UserModule {}
-```
+Check out a few resources that may come in handy when working with NestJS:
 
----
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
-## **كيفية اختبار الكود باستخدام DI**
+## Support
 
-يمكن استبدال الاعتمادات بخدمات وهمية (Mocks) عند الاختبار:
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-```typescript
-import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+## Stay in touch
 
-describe('UserController', () => {
-  let userController: UserController;
-  let mockUserService = { getUsers: jest.fn(() => ['MockUser1', 'MockUser2']) };
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [UserController],
-      providers: [{ provide: UserService, useValue: mockUserService }],
-    }).compile();
+## License
 
-    userController = module.get<UserController>(UserController);
-  });
-
-  it('should return a list of users', () => {
-    expect(userController.findAll()).toEqual(['MockUser1', 'MockUser2']);
-  });
-});
-```
-
----
-
-## **خاتمة**
-
-Dependency Injection هو جزء أساسي من بناء تطبيقات قابلة للصيانة وقابلة للاختبار. يساعد على تقليل الترابط المباشر بين المكونات وتحسين بنية الكود. NestJS يوفر DI كميزة أساسية، مما يجعل تطوير التطبيقات أكثر تنظيمًا ومرونة.
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).

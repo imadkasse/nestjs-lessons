@@ -1,21 +1,13 @@
-import { Module, ValidationPipe } from '@nestjs/common';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
-import { APP_GUARD, APP_PIPE } from '@nestjs/core';
-import { RolesGuard } from './guards/roles.guard';
+import { Module } from '@nestjs/common';
+import { UsersController } from './controllers/users.controller';
+import { UsersService } from './services/users.service';
+import { usersProviders } from './providers/user.provider';
+import { DatabaseModule } from 'src/database/database.module';
 
 @Module({
+  imports: [DatabaseModule],
   controllers: [UsersController],
-  providers: [
-    UsersService,
-    {
-      provide: APP_PIPE,
-      useClass: ValidationPipe, // add a global pipe in Module
-    },
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: RolesGuard, // add a global Guard in Module
-    // },
-  ],
+  providers: [...usersProviders, UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}

@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersController } from './users/users.controller';
-import { UsersService } from './users/users.service';
+import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
-import { CuPipePipe } from './cu-pipe/cu-pipe.pipe';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { FileModule } from './file/file.module';
 
 @Module({
-  imports: [UsersModule], // import the modules like UsersModule
+  imports: [ConfigModule.forRoot(), DatabaseModule, UsersModule, AuthModule, CloudinaryModule, FileModule], // import the modules like UsersModule
   controllers: [AppController],
-  providers: [AppService, CuPipePipe],
+  providers: [AppService],
 })
 export class AppModule {}
